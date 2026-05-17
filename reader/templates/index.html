@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>我的漫画库</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; background: #1a1a1a; color: #eee; padding: 20px; }
+        .manga-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+        .manga-card { background: #333; padding: 15px; border-radius: 8px; text-align: center; text-decoration: none; color: white; transition: 0.2s; }
+        .manga-card:hover { background: #444; transform: translateY(-5px); }
+        h1 { border-bottom: 2px solid #ed4242; padding-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h1>📚 我的漫画库</h1>
+    <div class="manga-grid">
+        {% for manga in mangas %}
+        <a href="/manga/{{ manga }}" class="manga-card">
+            <div style="font-size: 50px;">📖</div>
+            <div style="margin-top:10px;">{{ manga }}</div>
+        </a>
+        {% endfor %}
+    </div>
+</body>
+</html>

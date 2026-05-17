@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ manga_name }} - 目录</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; background: #1a1a1a; color: #eee; padding: 20px; }
+        .chapter-list { display: flex; flex-direction: column; gap: 10px; max-width: 600px; margin: 0 auto; }
+        .chapter-item { background: #333; padding: 12px; border-radius: 4px; text-decoration: none; color: white; display: flex; justify-content: space-between; }
+        .chapter-item:hover { background: #444; }
+        .back-btn { display: inline-block; margin-bottom: 20px; color: #ed4242; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-btn">← 返回库</a>
+    <h1>{{ manga_name }}</h1>
+    <div class="chapter-list">
+        {% for chapter in chapters %}
+        <a href="/manga/{{ manga_name }}/{{ chapter }}" class="chapter-item">
+            <span>{{ chapter }}</span>
+            <span style="color:#888;">></span>
+        </a>
+        {% endfor %}
+    </div>
+</body>
+</html>

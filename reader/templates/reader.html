@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ chapter_name }} - 阅读器</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; background: #000; color: #eee; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
+        .image-container { width: 100%; max-width: 900px; line-height: 0; }
+        .image-container img { width: 100%; height: auto; display: block; }
+        .nav-bar { position: sticky; bottom: 0; width: 100%; background: rgba(0,0,0,0.8); display: flex; justify-content: space-around; padding: 15px 0; backdrop-filter: blur(5px); }
+        .nav-btn { color: white; text-decoration: none; padding: 10px 20px; border: 1px solid #444; border-radius: 4px; background: #222; }
+        .nav-btn:hover { background: #ed4242; border-color: #ed4242; }
+        .top-nav { width: 100%; background: #111; padding: 15px; text-align: center; }
+        .top-nav a { color: #888; text-decoration: none; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <a href="/manga/{{ manga_name }}">← 返回目录</a>
+        <div style="margin-top:5px; font-weight:bold;">{{ chapter_name }}</div>
+    </div>
+
+    <div class="image-container">
+        {% for img in images %}
+        <img src="/image/{{ manga_name }}/{{ chapter_name }}/{{ img }}" loading="lazy">
+        {% endfor %}
+    </div>
+
+    <div class="nav-bar">
+        {% if prev_chap %}
+        <a href="/manga/{{ manga_name }}/{{ prev_chap }}" class="nav-btn">上一章</a>
+        {% else %}
+        <span class="nav-btn" style="opacity:0.3">上一章</span>
+        {% endif %}
+        
+        <a href="/manga/{{ manga_name }}" class="nav-btn">目录</a>
+
+        {% if next_chap %}
+        <a href="/manga/{{ manga_name }}/{{ next_chap }}" class="nav-btn">下一章</a>
+        {% else %}
+        <span class="nav-btn" style="opacity:0.3">下一章</span>
+        {% endif %}
+    </div>
+
+    <script>
+        // 允许左右箭头键翻页
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') {
+                {% if prev_chap %} window.location.href = "/manga/{{ manga_name }}/{{ prev_chap }}"; {% endif %}
+            } else if (e.key === 'ArrowRight') {
+                {% if next_chap %} window.location.href = "/manga/{{ manga_name }}/{{ next_chap }}"; {% endif %}
+            }
+        });
+    </script>
+</body>
+</html>

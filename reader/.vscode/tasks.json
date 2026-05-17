@@ -1,0 +1,10 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run Legado Downloader",
+			"type": "shell",
+			"command": "C:/Users/www20/AppData/Local/Python/bin/python3.14.exe main.py"
+		}
+	]
+}
