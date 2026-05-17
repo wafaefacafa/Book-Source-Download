@@ -5,6 +5,7 @@ import os
 from bs4 import BeautifulSoup
 import urllib3
 from urllib.parse import urljoin, quote
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # 禁用 SSL 警告
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -194,9 +195,22 @@ def main():
         os.makedirs(base_save_dir)
         
     # 开始正式全本下载
-    print(f"\n开始下载全本内容，共 {len(chapters)} 章...")
-    for idx, c in enumerate(chapters):
-        downloader.download_chapter(mid, c, base_save_dir, index=idx)
+    print(f"\n开始下载全本内容，共 {len(chapters)} 章 (并发模式)...")
+    
+    # 使用线程池并发下载章节
+    max_workers = 5  # 建议不要设置太高，防止被封 IP
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        future_to_chapter = {
+            executor.submit(downloader.download_chapter, mid, c, base_save_dir, index=idx): c 
+            for idx, c in enumerate(chapters)
+        }
+        
+        for future in as_completed(future_to_chapter):
+            chapter = future_to_chapter[future]
+            try:
+                future.result()
+            except Exception as exc:
+                print(f"❌ 章节 [{chapter['title']}] 产生未处理异常: {exc}")
         
     print(f"\n下载完成！所有文件已保存至: {base_save_dir}")
 
