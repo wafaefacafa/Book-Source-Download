@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUPREME Legado Suite | 极致阅读进化</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap');
+        
+        :root {
+            --accent: #a855f7;
+            --accent-glow: rgba(168, 85, 247, 0.4);
+        }
+
+        body {
+            background-color: #050505;
+            color: #fafafa;
+            font-family: 'Space Grotesk', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #fff 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            top: -200px;
+            left: -100px;
+            z-index: -1;
+            filter: blur(60px);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px var(--accent-glow);
+            border-color: var(--accent);
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .nav-link {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+    <div class="hero-glow"></div>
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center glass px-8 py-3">
+            <div class="text-2xl font-bold tracking-tighter gradient-text">SUPREME.</div>
+            <div class="hidden md:flex space-x-8 text-sm font-medium">
+                <a href="#features" class="nav-link opacity-70 hover:opacity-100">核心引擎</a>
+                <a href="#workflow" class="nav-link opacity-70 hover:opacity-100">处理流程</a>
+                <a href="#stats" class="nav-link opacity-70 hover:opacity-100">数据看板</a>
+            </div>
+            <a href="https://github.com" class="px-5 py-2 rounded-full bg-white text-black text-xs font-bold hover:bg-purple-100 transition-colors">
+                <i class="fab fa-github mr-2"></i>REPOS
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="inline-block px-4 py-1.5 mb-6 glass text-[10px] font-bold tracking-[0.2em] text-purple-400 uppercase">
+                Now Powered by Gemini 2.0 Flash
+            </div>
+            <h1 class="text-6xl md:text-8xl font-bold mb-8 tracking-tighter leading-tight">
+                解构文字，<br><span class="gradient-text">重塑阅读。</span>
+            </h1>
+            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 font-light">
+                SUPREME Legado Suite 是为硬核读者打造的媒体中枢。
+                从破损的 17MB TXT 修复，到 450+ 话漫画自动同步，我们只提供极致。
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="#features" class="px-8 py-4 rounded-full bg-purple-600 font-bold hover:bg-purple-500 transition-all">
+                    探索核心功能
+                </a>
+                <a href="#workflow" class="px-8 py-4 rounded-full glass font-bold hover:bg-white/10 transition-all">
+                    技术架构
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Dashboard -->
+    <section id="stats" class="py-20 px-6">
+        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="glass p-8 text-center">
+                <div class="text-4xl font-bold gradient-text mb-2 animate-pulse">17.2<span class="text-sm">MB</span></div>
+                <div class="text-xs text-gray-500 tracking-widest uppercase">恢复源文件</div>
+            </div>
+            <div class="glass p-8 text-center">
+                <div class="text-4xl font-bold gradient-text mb-2">99,329</div>
+                <div class="text-xs text-gray-500 tracking-widest uppercase">清理后行数</div>
+            </div>
+            <div class="glass p-8 text-center">
+                <div class="text-4xl font-bold gradient-text mb-2">456+</div>
+                <div class="text-xs text-gray-500 tracking-widest uppercase">已同步章节</div>
+            </div>
+            <div class="glass p-8 text-center">
+                <div class="text-4xl font-bold gradient-text mb-2">0.02<span class="text-sm">s</span></div>
+                <div class="text-xs text-gray-500 tracking-widest uppercase">平均清洗响应</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl font-bold mb-16 tracking-tight">核心引擎</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass p-10 card-hover transition-all duration-500 border-l-4 border-l-purple-600">
+                    <i class="fas fa-broom text-3xl text-purple-500 mb-6"></i>
+                    <h3 class="text-2xl font-bold mb-4">Supreme Cleaner</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        基于流式过滤器的文本清洗引擎。能够瞬间剔除 17MB 文件中的重叠行、空白符及反爬垃圾。
+                    </p>
+                </div>
+                <div class="glass p-10 card-hover transition-all duration-500 border-l-4 border-l-cyan-500">
+                    <i class="fas fa-image text-3xl text-cyan-500 mb-6"></i>
+                    <h3 class="text-2xl font-bold mb-4">Manga Pulse</h3>
+                    <h3 class="text-2xl font-bold mb-4">Manga Pulse</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        支持 Concurrent.futures 迸发下载，自动绕过 WAF 限制，实现 4K 超清源同步。
+                    </p>
+                </div>
+                <div class="glass p-10 card-hover transition-all duration-500 border-l-4 border-l-pink-500">
+                    <i class="fas fa-layer-group text-3xl text-pink-500 mb-6"></i>
+                    <h3 class="text-2xl font-bold mb-4">E-Packer</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        智能章节切分器。通过正则表达式精准定位章节标题，自动重组混乱的任务包。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workflow -->
+    <section id="workflow" class="py-20 bg-[#080808]">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="relative border-l-2 border-purple-900 ml-4 pl-12 space-y-16">
+                <div class="relative">
+                    <div class="absolute -left-[58px] top-0 w-4 h-4 rounded-full bg-purple-600 shadow-[0_0_15px_#a855f7]"></div>
+                    <h4 class="text-xl font-bold mb-2">文件解构</h4>
+                    <p class="text-gray-500">读取原始流，进行初步的编码校验与内容映射。</p>
+                </div>
+                <div class="relative">
+                    <div class="absolute -left-[58px] top-0 w-4 h-4 rounded-full bg-purple-600"></div>
+                    <h4 class="text-xl font-bold mb-2">Supreme 清洗</h4>
+                    <p class="text-gray-500">执行行级指纹验证，移除 300,000+ 余行冗余信息。</p>
+                </div>
+                <div class="relative">
+                    <div class="absolute -left-[58px] top-0 w-4 h-4 rounded-full bg-purple-600 animate-ping"></div>
+                    <h4 class="text-xl font-bold mb-2">GitHub 同步</h4>
+                    <p class="text-gray-500">自动化 Push 流程，维持远程仓库与本地库的高效对等。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-20 border-t border-white/5 text-center">
+        <div class="opacity-30 text-[10px] tracking-[0.4em] uppercase mb-4">Engineered for perfection</div>
+        <div class="text-gray-600 text-xs">&copy; 2026 SUPREME LEGADO. ALL RIGHTS RESERVED.</div>
+    </footer>
+</body>
+</html>
