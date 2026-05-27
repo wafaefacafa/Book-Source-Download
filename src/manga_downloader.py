@@ -126,8 +126,7 @@ class LegadoMangaDownloader:
             else:
                 print(f"补全章节 [{chapter_title}]: 当前 {len(existing_files)}/{len(images)}")
             
-        if not os.path.exists(chapter_path):
-            os.makedirs(chapter_path)
+        os.makedirs(chapter_path, exist_ok=True)
             
         print(f"正在下载章节 [{chapter_title}] ({len(images)} 张图片)...")
         
