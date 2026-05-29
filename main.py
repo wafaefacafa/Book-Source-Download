@@ -14,10 +14,16 @@ def main():
     category = input("输入想要查找的分类 (默认: 小说): ") or "小说"
     rank = input("输入最低等级要求 (如: 优++, 默认: 优): ") or "优"
     
-    sources = dl.filter_sources(category, rank)
-    print(f"\n匹配到 {len(sources)} 个书源。")
+    keyword = input("\n请输入要搜索的书名: ")
+    if not keyword:
+        return
+
+    # [智能推荐逻辑]
+    sources = dl.get_smart_sources(keyword, category, rank)
+    print(f"\n初始匹配到 {len(sources)} 个书源，已根据书名完成优先级排序。")
     
-    # 优先级 1: 绝对稳定的传统源 (手动配置)
+    # 优先级 1: 绝对稳定的传统源 (手动配置，作为兜底放在最前面)
+    # 如果搜索结果是轻小说类，可以考虑动态调整这部分的顺序，但目前先保持兼容
     sources.insert(0, {
         "bookSourceName": "三叉小说",
         "bookSourceUrl": "http://m.xxxbiquge.info",
@@ -66,14 +72,10 @@ def main():
         "ruleSearch": {"checkKeyWord": "keyword"}
     })
 
-    keyword = input("\n请输入要搜索的书名: ")
-    if not keyword:
-        return
-
-    print("\n正在扫描优质源（前10个）...")
+    print("\n正在扫描优质源（前15个）...")
     all_results = []
     # 1. 扫描所有源并汇总
-    for s in sources[:10]:
+    for s in sources[:15]:
         results = dl.search_book(s, keyword)
         if results:
             print(f"✅ 在 [{s['bookSourceName']}] 发现 {len(results)} 个匹配项")
@@ -105,6 +107,16 @@ def main():
             target = all_results[selected_idx]
             source_obj = target['_source_obj']
             
+            # [新增：前置深度验证]
+            dl.cleaner.reset_history() # 下载新书前清空指纹库
+            is_ok, msg = dl.verify_source_health(source_obj, target)
+            if not is_ok:
+                print(f"⚠️  警告: 该书源未通过安全校验！\n原因: {msg}")
+                confirm = input("是否忽略警告继续下载？(y/n): ")
+                if confirm.lower() != 'y':
+                    print("已取消下载。")
+                    return
+
             print(f"\n🚀 正在从 [{target['source']}] 抓取全量内容: {target['title']}...")
             content = dl.get_content(source_obj, target['url'])
             

@@ -12,7 +12,12 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 class LegadoMangaDownloader:
     def __init__(self, source_path=None):
+        self.max_workers = 16
         self.session = requests.Session()
+        # 优化漫画连接池，因为图片请求非常频繁
+        adapter = requests.adapters.HTTPAdapter(pool_connections=self.max_workers, pool_maxsize=self.max_workers)
+        self.session.mount('http://', adapter)
+        self.session.mount('https://', adapter)
         self.session.headers.update({
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
             'Accept-Language': 'zh-CN,zh;q=0.9',
@@ -130,31 +135,31 @@ class LegadoMangaDownloader:
             
         print(f"正在下载章节 [{chapter_title}] ({len(images)} 张图片)...")
         
-        success_count = 0
-        for idx, img in enumerate(images):
+        def download_img(idx, img):
             img_url = f"https://f40-1-4.g-mh.online{img['url']}"
             img_name = f"{idx+1:03d}.webp"
             file_path = os.path.join(chapter_path, img_name)
             
             if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
-                success_count += 1
-                continue
+                return True
             
-            # 下载图片（增加重试和更长的超时）
-            img_downloaded = False
             for img_retry in range(3):
                 try:
                     img_data = self.session.get(img_url, headers={'Referer': 'https://manhuafree.com'}, timeout=30).content
                     with open(file_path, 'wb') as f:
                         f.write(img_data)
-                    img_downloaded = True
+                    return True
+                except:
+                    pass
+            return False
+
+        # 使用线程池并发抓取图片
+        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            future_to_img = {executor.submit(download_img, idx, img): idx for idx, img in enumerate(images)}
+            success_count = 0
+            for future in as_completed(future_to_img):
+                if future.result():
                     success_count += 1
-                    break
-                except Exception as e:
-                    print(f"  - 图片 {img_name} 下载失败 (重试 {img_retry+1}/3): {e}")
-            
-            if not img_downloaded:
-                print(f"  ❌ 图片 {img_name} 最终下载失败")
 
         if success_count >= len(images):
             print(f"✅ 章节 [{chapter_title}] 下载完成")
